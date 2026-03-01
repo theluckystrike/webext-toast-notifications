@@ -1,0 +1,37 @@
+{
+    "name": "webext-toast-notifications",
+    "version": "0.1.0",
+    "description": "In-page toast notifications for Chrome extensions — success/error/info/warning toasts, progress bars, stacking, auto-dismiss, and custom styling.",
+    "author": "Zovo <hello@zovo.one>",
+    "license": "MIT",
+    "keywords": [
+        "chrome-extension",
+        "toast",
+        "notification",
+        "snackbar",
+        "alert",
+        "in-page",
+        "manifest-v3",
+        "browser-extension",
+        "ui"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/theluckystrike/webext-toast-notifications.git"
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "prepublishOnly": "npm run build"
+    },
+    "devDependencies": {
+        "@types/chrome": "^0.0.260",
+        "typescript": "^5.3.3"
+    }
+}
