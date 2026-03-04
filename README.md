@@ -1,144 +1,113 @@
-# webext-toast-notifications — In-Page Toasts for Extensions
+# webext-toast-notifications
 
-[![npm version](https://img.shields.io/npm/v/webext-toast-notifications)](https://npmjs.com/package/webext-toast-notifications)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
-[![Chrome Web Extension](https://img.shields.io/badge/Chrome-Web%20Extension-orange.svg)](https://developer.chrome.com/docs/extensions/)
-[![CI Status](https://github.com/theluckystrike/webext-toast-notifications/actions/workflows/ci.yml/badge.svg)](https://github.com/theluckystrike/webext-toast-notifications/actions)
-[![Discord](https://img.shields.io/badge/Discord-Zovo-blueviolet.svg?logo=discord)](https://discord.gg/zovo)
-[![Website](https://img.shields.io/badge/Website-zovo.one-blue)](https://zovo.one)
-[![GitHub Stars](https://img.shields.io/github/stars/theluckystrike/webext-toast-notifications?style=social)](https://github.com/theluckystrike/webext-toast-notifications)
+> In-page toast notifications for Chrome extensions -- success/error/info/warning toasts, progress bars, stacking, auto-dismiss, and custom styling for MV3.
 
-> Success/error/warning/info toasts with progress bars, stacking, and auto-dismiss.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**webext-toast-notifications** provides beautiful in-page toast notifications for Chrome extensions. Show success messages, errors, warnings, and progress updates with automatic stacking and dismiss.
-
-Part of the [Zovo](https://zovo.one) developer tools family.
-
-## Features
-
-- ✅ **Multiple Types** - Success, error, warning, info, and progress
-- ✅ **Auto-Dismiss** - Automatically dismiss after configurable duration
-- ✅ **Stacking** - Multiple toasts stack vertically
-- ✅ **Progress Bars** - Show upload/download progress
-- ✅ **TypeScript Support** - Full type definitions included
-
-## Installation
+## Install
 
 ```bash
 npm install webext-toast-notifications
 ```
 
-## Quick Start
+## Usage
 
 ```typescript
 import { Toast } from 'webext-toast-notifications';
 
-// Basic usage
-Toast.success('Settings saved!');
-Toast.error('Failed to save', 5000);
-Toast.warning('Warning message');
-Toast.info('Information');
+// Show a toast with full options
+Toast.show('Operation completed', {
+  type: 'success',
+  duration: 4000,
+  position: 'top-right',
+  closable: true,
+});
 
-// Progress toasts
-Toast.progress('Uploading...', 3000);
-```
+// Convenience methods for each type
+Toast.success('File saved successfully');
+Toast.error('Failed to connect');
+Toast.warning('Disk space is running low');
+Toast.info('New version available');
 
-## Usage Examples
+// Show a toast with a countdown progress bar
+Toast.progress('Uploading file...', 5000);
 
-### Success Toast
-
-```typescript
-Toast.success('Changes saved successfully!', 3000);
-```
-
-### Error Toast
-
-```typescript
-try {
-  await saveSettings(data);
-  Toast.success('Saved!');
-} catch (error) {
-  Toast.error('Failed to save: ' + error.message, 5000);
-}
-```
-
-### Progress Toast
-
-```typescript
-const toast = Toast.progress('Uploading file...', 0);
-
-// Update progress
-toast.setProgress(50);
-
-// Complete
-toast.complete('Upload complete!');
-```
-
-### Custom Configuration
-
-```typescript
-import { Toast, ToastConfig } from 'webext-toast-notifications';
-
-const config: ToastConfig = {
-  position: 'bottom-right',
-  duration: 3000,
-  dismissible: true,
-};
-
-Toast.config(config);
+// Manually dismiss a toast
+const toast = Toast.info('Processing...');
+Toast.dismiss(toast);
 ```
 
 ## API
 
-### Toast Methods
+### `ToastOptions` (interface)
 
-| Method | Description |
-|--------|-------------|
-| `Toast.success(message, duration?)` | Show success toast |
-| `Toast.error(message, duration?)` | Show error toast |
-| `Toast.warning(message, duration?)` | Show warning toast |
-| `Toast.info(message, duration?)` | Show info toast |
-| `Toast.progress(message, duration?)` | Show progress toast |
-| `Toast.dismiss(id?)` | Dismiss a toast |
+Configuration object for toast display.
 
-## Contributing
+| Property   | Type                                                             | Default        | Description                          |
+| ---------- | ---------------------------------------------------------------- | -------------- | ------------------------------------ |
+| `type`     | `'success' \| 'error' \| 'warning' \| 'info'`                   | `'info'`       | Visual style and icon of the toast.  |
+| `duration` | `number`                                                         | `4000`         | Auto-dismiss delay in milliseconds. Use `0` to disable auto-dismiss. |
+| `position` | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left'`  | `'top-right'`  | Screen corner for toast placement.   |
+| `closable` | `boolean`                                                        | `true`         | Whether to show a close button.      |
 
-Contributions are welcome! Please follow these steps:
+### `Toast` (class)
 
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/toast-feature`
-3. **Make** your changes
-4. **Test** your changes: `npm test`
-5. **Commit** your changes: `git commit -m 'Add new feature'`
-6. **Push** to the branch: `git push origin feature/toast-feature`
-7. **Submit** a Pull Request
+All methods are **static** -- there is no need to instantiate the class.
 
-## Built by Zovo
+#### `static show(message: string, options?: ToastOptions): HTMLElement`
 
-Part of the [Zovo](https://zovo.one) developer tools family — privacy-first Chrome extensions built by developers, for developers.
+Displays a toast notification with the given message and options.
 
-## See Also
+- **message** (`string`) -- The text to display.
+- **options** (`ToastOptions`, optional) -- Display configuration.
+- **Returns** `HTMLElement` -- The toast DOM element.
 
-### Related Zovo Repositories
+#### `static dismiss(toast: HTMLElement): void`
 
-- [webext-quick-settings](https://github.com/theluckystrike/webext-quick-settings) - Settings panel
-- [webext-tooltip](https://github.com/theluckystrike/webext-tooltip) - Tooltip component
-- [chrome-storage-plus](https://github.com/theluckystrike/chrome-storage-plus) - Type-safe storage
-- [chrome-extension-starter-mv3](https://github.com/theluckystrike/chrome-extension-starter-mv3) - Extension template
+Fades out and removes a toast element from the DOM.
 
-### Zovo Chrome Extensions
+- **toast** (`HTMLElement`) -- The toast element to remove.
 
-- [Zovo Tab Manager](https://chrome.google.com/webstore/detail/zovo-tab-manager) - Manage tabs efficiently
-- [Zovo Focus](https://chrome.google.com/webstore/detail/zovo-focus) - Block distractions
-- [Zovo Permissions Scanner](https://chrome.google.com/webstore/detail/zovo-permissions-scanner) - Check extension privacy grades
+#### `static success(msg: string, duration?: number): HTMLElement`
 
-Visit [zovo.one](https://zovo.one) for more information.
+Shorthand for `show(msg, { type: 'success', duration })`.
+
+- **msg** (`string`) -- The message text.
+- **duration** (`number`, optional) -- Auto-dismiss delay in milliseconds.
+- **Returns** `HTMLElement` -- The toast DOM element.
+
+#### `static error(msg: string, duration?: number): HTMLElement`
+
+Shorthand for `show(msg, { type: 'error', duration })`.
+
+- **msg** (`string`) -- The message text.
+- **duration** (`number`, optional) -- Auto-dismiss delay in milliseconds.
+- **Returns** `HTMLElement` -- The toast DOM element.
+
+#### `static warning(msg: string, duration?: number): HTMLElement`
+
+Shorthand for `show(msg, { type: 'warning', duration })`.
+
+- **msg** (`string`) -- The message text.
+- **duration** (`number`, optional) -- Auto-dismiss delay in milliseconds.
+- **Returns** `HTMLElement` -- The toast DOM element.
+
+#### `static info(msg: string, duration?: number): HTMLElement`
+
+Shorthand for `show(msg, { type: 'info', duration })`.
+
+- **msg** (`string`) -- The message text.
+- **duration** (`number`, optional) -- Auto-dismiss delay in milliseconds.
+- **Returns** `HTMLElement` -- The toast DOM element.
+
+#### `static progress(message: string, durationMs?: number): HTMLElement`
+
+Shows a toast with an animated progress bar that counts down, then auto-dismisses.
+
+- **message** (`string`) -- The message text.
+- **durationMs** (`number`, default `3000`) -- Total duration in milliseconds.
+- **Returns** `HTMLElement` -- The toast DOM element.
 
 ## License
 
-MIT — [Zovo](https://zovo.one)
-
----
-
-*Built by developers, for developers. No compromises on privacy.*
+MIT
