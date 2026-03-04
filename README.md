@@ -1,8 +1,12 @@
 # webext-toast-notifications
 
-> In-page toast notifications for Chrome extensions -- success/error/info/warning toasts, progress bars, stacking, auto-dismiss, and custom styling for MV3.
-
+[![npm version](https://img.shields.io/npm/v/webext-toast-notifications)](https://npmjs.com/package/webext-toast-notifications)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
+[![Discord](https://img.shields.io/badge/Discord-Zovo-blueviolet.svg?logo=discord)](https://discord.gg/zovo)
+[![Website](https://img.shields.io/badge/Website-zovo.one-blue)](https://zovo.one)
+
+> In-page toast notifications for Chrome extensions -- success/error/info/warning toasts, progress bars, stacking, auto-dismiss, and custom styling for MV3.
 
 ## Install
 
@@ -111,3 +115,18 @@ Shows a toast with an animated progress bar that counts down, then auto-dismisse
 ## License
 
 MIT
+
+## See Also
+
+### Related Zovo Repositories
+
+- [webext-tooltip](https://github.com/theluckystrike/webext-tooltip) - Tooltip component
+- [webext-progress-bar](https://github.com/theluckystrike/webext-progress-bar) - Progress indicators
+- [awesome-chrome-extensions-dev](https://github.com/theluckystrike/awesome-chrome-extensions-dev) - Curated list of Chrome extension development resources
+
+### Zovo Chrome Extensions
+
+- [Zovo Tab Manager](https://chrome.google.com/webstore/detail/zovo-tab-manager) - Manage tabs efficiently
+- [Zovo Focus](https://chrome.google.com/webstore/detail/zovo-focus) - Block distractions
+
+Visit [zovo.one](https://zovo.one) for more information.
