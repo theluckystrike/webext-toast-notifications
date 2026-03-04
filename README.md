@@ -9,6 +9,8 @@
 
 > In-page toast notifications for Chrome extensions -- success/error/info/warning toasts, progress bars, stacking, auto-dismiss, and custom styling for MV3.
 
+Part of the [Zovo](https://zovo.one) developer tools family.
+
 ## Install
 
 ```bash
@@ -143,3 +145,7 @@ Built by [Zovo](https://zovo.one)
 - [Zovo Focus](https://chrome.google.com/webstore/detail/zovo-focus) - Block distractions
 
 Visit [zovo.one](https://zovo.one) for more information.
+
+---
+
+Built by [Zovo](https://zovo.one)
