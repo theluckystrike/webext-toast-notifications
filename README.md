@@ -21,7 +21,11 @@ npm install webext-toast-notifications
 
 ```typescript
 import { Toast } from 'webext-toast-notifications';
+```
 
+For more complete examples, see the [examples](./examples/) directory.
+
+```typescript
 // Show a toast with full options
 Toast.show('Operation completed', {
   type: 'success',
