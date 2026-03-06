@@ -3,151 +3,108 @@
 [![npm version](https://img.shields.io/npm/v/webext-toast-notifications)](https://npmjs.com/package/webext-toast-notifications)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
-[![Discord](https://img.shields.io/badge/Discord-Zovo-blueviolet.svg?logo=discord)](https://discord.gg/zovo)
-[![Website](https://img.shields.io/badge/Website-zovo.one-blue)](https://zovo.one)
-[![GitHub Stars](https://img.shields.io/github/stars/theluckystrike/webext-toast-notifications?style=social)](https://github.com/theluckystrike/webext-toast-notifications)
 
-> In-page toast notifications for Chrome extensions -- success/error/info/warning toasts, progress bars, stacking, auto-dismiss, and custom styling for MV3.
+In-page toast notifications for Chrome extensions. Supports success, error, warning, and info types with progress bars, stacking, auto-dismiss, and custom positioning. Built for Manifest V3. Zero dependencies.
 
-Part of the [Zovo](https://zovo.one) developer tools family.
+---
 
-## Install
+INSTALL
 
 ```bash
 npm install webext-toast-notifications
 ```
 
-## Usage
+QUICK START
 
 ```typescript
 import { Toast } from 'webext-toast-notifications';
+
+Toast.success('File saved');
+Toast.error('Connection lost');
+Toast.warning('Disk space low');
+Toast.info('Update available');
 ```
 
-For more complete examples, see the [examples](./examples/) directory.
+SHOWING A TOAST WITH OPTIONS
 
 ```typescript
-// Show a toast with full options
 Toast.show('Operation completed', {
   type: 'success',
   duration: 4000,
   position: 'top-right',
   closable: true,
 });
-
-// Convenience methods for each type
-Toast.success('File saved successfully');
-Toast.error('Failed to connect');
-Toast.warning('Disk space is running low');
-Toast.info('New version available');
-
-// Show a toast with a countdown progress bar
-Toast.progress('Uploading file...', 5000);
-
-// Manually dismiss a toast
-const toast = Toast.info('Processing...');
-Toast.dismiss(toast);
 ```
 
-## API
+PROGRESS BAR
 
-### `ToastOptions` (interface)
+Display a toast with an animated countdown bar that auto-dismisses when finished.
 
-Configuration object for toast display.
+```typescript
+Toast.progress('Uploading file...', 5000);
+```
 
-| Property   | Type                                                             | Default        | Description                          |
-| ---------- | ---------------------------------------------------------------- | -------------- | ------------------------------------ |
-| `type`     | `'success' \| 'error' \| 'warning' \| 'info'`                   | `'info'`       | Visual style and icon of the toast.  |
-| `duration` | `number`                                                         | `4000`         | Auto-dismiss delay in milliseconds. Use `0` to disable auto-dismiss. |
-| `position` | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left'`  | `'top-right'`  | Screen corner for toast placement.   |
-| `closable` | `boolean`                                                        | `true`         | Whether to show a close button.      |
+DISMISSING A TOAST
 
-### `Toast` (class)
+Every method returns the toast HTMLElement. Pass it to `dismiss` to remove it early.
 
-All methods are **static** -- there is no need to instantiate the class.
+```typescript
+const el = Toast.info('Processing...');
+Toast.dismiss(el);
+```
 
-#### `static show(message: string, options?: ToastOptions): HTMLElement`
+API
 
-Displays a toast notification with the given message and options.
+All methods on the Toast class are static. There is no need to create an instance.
 
-- **message** (`string`) -- The text to display.
-- **options** (`ToastOptions`, optional) -- Display configuration.
-- **Returns** `HTMLElement` -- The toast DOM element.
+`Toast.show(message, options?)` -- Returns HTMLElement. Displays a toast with the given message and options.
 
-#### `static dismiss(toast: HTMLElement): void`
+`Toast.dismiss(toast)` -- Removes a toast element from the DOM with a fade-out animation.
 
-Fades out and removes a toast element from the DOM.
+`Toast.success(msg, duration?)` -- Shorthand for show with type set to success.
 
-- **toast** (`HTMLElement`) -- The toast element to remove.
+`Toast.error(msg, duration?)` -- Shorthand for show with type set to error.
 
-#### `static success(msg: string, duration?: number): HTMLElement`
+`Toast.warning(msg, duration?)` -- Shorthand for show with type set to warning.
 
-Shorthand for `show(msg, { type: 'success', duration })`.
+`Toast.info(msg, duration?)` -- Shorthand for show with type set to info.
 
-- **msg** (`string`) -- The message text.
-- **duration** (`number`, optional) -- Auto-dismiss delay in milliseconds.
-- **Returns** `HTMLElement` -- The toast DOM element.
+`Toast.progress(message, durationMs?)` -- Shows a toast with an animated progress bar. Defaults to 3000ms. Auto-dismisses when the bar reaches zero.
 
-#### `static error(msg: string, duration?: number): HTMLElement`
+TOAST OPTIONS
 
-Shorthand for `show(msg, { type: 'error', duration })`.
+```
+type        'success' | 'error' | 'warning' | 'info'                  default 'info'
+duration    number (ms), use 0 to keep it visible indefinitely         default 4000
+position    'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' default 'top-right'
+closable    boolean, shows or hides the close button                   default true
+```
 
-- **msg** (`string`) -- The message text.
-- **duration** (`number`, optional) -- Auto-dismiss delay in milliseconds.
-- **Returns** `HTMLElement` -- The toast DOM element.
+HOW IT WORKS
 
-#### `static warning(msg: string, duration?: number): HTMLElement`
+The library injects a fixed-position container into the page DOM at the chosen screen corner. Each toast is a styled div with a colored left border matching its type. Toasts stack vertically with an 8px gap. Dismiss animations use a 300ms opacity fade before the element is removed.
 
-Shorthand for `show(msg, { type: 'warning', duration })`.
+The dark theme (background #1F2937, text #F9FAFB) works well on most pages without clashing. There is no external CSS to load.
 
-- **msg** (`string`) -- The message text.
-- **duration** (`number`, optional) -- Auto-dismiss delay in milliseconds.
-- **Returns** `HTMLElement` -- The toast DOM element.
+LICENSE
 
-#### `static info(msg: string, duration?: number): HTMLElement`
+MIT -- see LICENSE file.
 
-Shorthand for `show(msg, { type: 'info', duration })`.
+CONTRIBUTING
 
-- **msg** (`string`) -- The message text.
-- **duration** (`number`, optional) -- Auto-dismiss delay in milliseconds.
-- **Returns** `HTMLElement` -- The toast DOM element.
-
-#### `static progress(message: string, durationMs?: number): HTMLElement`
-
-Shows a toast with an animated progress bar that counts down, then auto-dismisses.
-
-- **message** (`string`) -- The message text.
-- **durationMs** (`number`, default `3000`) -- Total duration in milliseconds.
-- **Returns** `HTMLElement` -- The toast DOM element.
-
-## License
-
-MIT
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome. Fork the repo, make your changes, and open a pull request.
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Commit your changes
+4. Push and open a PR
 
-## See Also
+RELATED
 
-### Related Zovo Repositories
-
-- [webext-tooltip](https://github.com/theluckystrike/webext-tooltip) - Tooltip component
-- [webext-progress-bar](https://github.com/theluckystrike/webext-progress-bar) - Progress indicators
-- [awesome-chrome-extensions-dev](https://github.com/theluckystrike/awesome-chrome-extensions-dev) - Curated list of Chrome extension development resources
-
-### Zovo Chrome Extensions
-
-- [Zovo Tab Manager](https://chrome.google.com/webstore/detail/zovo-tab-manager) - Manage tabs efficiently
-- [Zovo Focus](https://chrome.google.com/webstore/detail/zovo-focus) - Block distractions
-
-Visit [zovo.one](https://zovo.one) for more information.
+- [webext-tooltip](https://github.com/theluckystrike/webext-tooltip)
+- [webext-progress-bar](https://github.com/theluckystrike/webext-progress-bar)
+- [awesome-chrome-extensions-dev](https://github.com/theluckystrike/awesome-chrome-extensions-dev)
 
 ---
 
-Built by [Zovo](https://zovo.one)
+Built by theluckystrike at [zovo.one](https://zovo.one)
